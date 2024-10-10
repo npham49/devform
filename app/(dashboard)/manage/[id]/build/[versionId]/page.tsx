@@ -7,6 +7,7 @@ async function BuilderPage({
 }: {
   params: {
     id: string;
+    versionId: string;
   };
 }) {
   const { id } = params;

@@ -10,18 +10,27 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PageForm (@CodeWithKliton)",
-  description: "Check my youtube channel for more content",
+  title: "DevForm",
+  description: "Form builder for developers",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
           <NextTopLoader />
           <DesignerContextProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
               {children}
               <Toaster />
             </ThemeProvider>

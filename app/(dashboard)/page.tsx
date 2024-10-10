@@ -14,7 +14,7 @@ import { FaWpforms } from "react-icons/fa";
 import { HiCursorClick } from "react-icons/hi";
 import { TbArrowBounce } from "react-icons/tb";
 import { Separator } from "@/components/ui/separator";
-import CreateFormBtn from "@/app/(dashboard)/_components/CreateFormBtn";
+import CreateFormBtn from "./_components/create-form-button";
 import { Form } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { formatDistance } from "date-fns";
@@ -193,7 +193,7 @@ function FormCard({ form }: { form: Form }) {
             variant={"secondary"}
             className="w-full mt-2 text-md gap-4"
           >
-            <Link href={`/builder/${form.id}`}>
+            <Link href={`/manage/${form.id}`}>
               Edit form <FaEdit />
             </Link>
           </Button>

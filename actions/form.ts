@@ -54,19 +54,40 @@ export async function CreateForm(data: formSchemaType) {
 
   const { name, description } = data;
 
-  const form = await prisma.form.create({
-    data: {
-      userId: user.id,
-      name,
-      description,
-    },
-  });
+  try {
+    const result = await prisma.$transaction(async (prisma) => {
+      const form = await prisma.form.create({
+        data: {
+          userId: user.id,
+          name,
+          description,
+        },
+      });
 
-  if (!form) {
-    throw new Error("something went wrong");
+      if (!form) {
+        throw new Error("Failed to create form");
+      }
+
+      const formVersion = await prisma.formVersion.create({
+        data: {
+          formId: form.id,
+          userId: user.id,
+          changes: "Form created",
+        },
+      });
+
+      if (!formVersion) {
+        throw new Error("Failed to create form version");
+      }
+
+      return { formId: form.id, versionId: formVersion.id };
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Transaction failed:", error);
+    throw new Error("Failed to create form and initial version");
   }
-
-  return form.id;
 }
 
 export async function GetForms() {
