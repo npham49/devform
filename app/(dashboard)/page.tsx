@@ -1,5 +1,12 @@
 import { GetFormStats, GetForms } from "@/actions/form";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReactNode, Suspense } from "react";
 import { LuView } from "react-icons/lu";
@@ -7,7 +14,7 @@ import { FaWpforms } from "react-icons/fa";
 import { HiCursorClick } from "react-icons/hi";
 import { TbArrowBounce } from "react-icons/tb";
 import { Separator } from "@/components/ui/separator";
-import CreateFormBtn from "@/components/CreateFormBtn";
+import CreateFormBtn from "@/app/(dashboard)/_components/CreateFormBtn";
 import { Form } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { formatDistance } from "date-fns";
@@ -111,7 +118,9 @@ export function StatsCard({
   return (
     <Card className={className}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          {title}
+        </CardTitle>
         {icon}
       </CardHeader>
       <CardContent>
@@ -179,7 +188,11 @@ function FormCard({ form }: { form: Form }) {
           </Button>
         )}
         {!form.published && (
-          <Button asChild variant={"secondary"} className="w-full mt-2 text-md gap-4">
+          <Button
+            asChild
+            variant={"secondary"}
+            className="w-full mt-2 text-md gap-4"
+          >
             <Link href={`/builder/${form.id}`}>
               Edit form <FaEdit />
             </Link>
