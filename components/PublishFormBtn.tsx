@@ -1,4 +1,4 @@
-import { PublishForm } from "@/actions/form";
+import { PublishVersion } from "@/actions/form";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { FaSpinner } from "react-icons/fa";
@@ -17,13 +17,13 @@ import {
 import { Button } from "./ui/button";
 import { toast } from "./ui/use-toast";
 
-function PublishFormBtn({ id }: { id: number }) {
+function PublishFormBtn({ id }: { id: string }) {
   const [loading, startTransition] = useTransition();
   const router = useRouter();
 
   async function publishForm() {
     try {
-      await PublishForm(id);
+      await PublishVersion(id);
       toast({
         title: "Success",
         description: "Your form is now available to the public",
@@ -49,7 +49,7 @@ function PublishFormBtn({ id }: { id: number }) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. After publishing you will not be able to edit this form. <br />
+            This action cannot be undone. After publishing you will not be able to edit this version. <br />
             <br />
             <span className="font-medium">
               By publishing this form you will make it available to the public and you will be able to collect

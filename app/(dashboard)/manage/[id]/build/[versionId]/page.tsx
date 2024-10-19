@@ -1,4 +1,4 @@
-import { GetFormById } from "@/actions/form";
+import { GetVersionByIdAndFormId } from "@/actions/form";
 import FormBuilder from "@/components/FormBuilder";
 import React from "react";
 
@@ -10,12 +10,12 @@ async function BuilderPage({
     versionId: string;
   };
 }) {
-  const { id } = params;
-  const form = await GetFormById(Number(id));
-  if (!form) {
-    throw new Error("form not found");
+  const { id, versionId } = params;
+  const version = await GetVersionByIdAndFormId(Number(id), versionId);
+  if (!version) {
+    throw new Error("version not found");
   }
-  return <FormBuilder form={form} />;
+  return <FormBuilder version={version} />;
 }
 
 export default BuilderPage;

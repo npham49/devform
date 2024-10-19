@@ -1,6 +1,5 @@
 import React from "react";
-import { getFormVersionByFormId } from "./actions";
-import { GetFormById } from "@/actions/form";
+import { getFormVersionByFormId, GetFormById } from "./actions";
 import VisitBtn from "@/components/VisitBtn";
 import FormLinkShare from "@/components/FormLinkShare";
 import {
@@ -30,7 +29,7 @@ async function ManagePage({
     throw new Error("form not found");
   }
   return (
-    <>
+    <div className="flex flex-col w-full">
       <div className="py-10 border-b border-muted">
         <div className="flex justify-between container">
           <h1 className="text-4xl font-bold truncate">{form.name}</h1>
@@ -46,7 +45,7 @@ async function ManagePage({
       <div className="container pt-10">
         <VersionsTable id={form.id} versions={versions} />
       </div>
-    </>
+    </div>
   );
 }
 
@@ -70,6 +69,7 @@ async function VersionsTable({
             <TableRow>
               <TableHead className="uppercase">Version</TableHead>
               <TableHead className="uppercase">Created At</TableHead>
+              <TableHead className="uppercase">Published</TableHead>
               <TableHead className="uppercase">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -83,9 +83,17 @@ async function VersionsTable({
                   })}
                 </TableCell>
                 <TableCell>
-                  <Link href={`/manage/${id}/build/${version.id}`}>
+                  {version.published ? "Published" : "Not Published"}
+                </TableCell>
+                <TableCell>
+                  <Link className="mr-2" href={`/manage/${id}/build/${version.id}`}>
                     <Button variant="outline" size="sm">
-                      View
+                      Edit
+                    </Button>
+                  </Link>
+                  <Link href={`/manage/${id}/preview/${version.id}`}>
+                    <Button variant="outline" size="sm">
+                      Preview
                     </Button>
                   </Link>
                 </TableCell>

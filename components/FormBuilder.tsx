@@ -1,6 +1,6 @@
 "use client";
 
-import { Form } from "@prisma/client";
+import { Form, FormVersion, Prisma } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import PreviewDialogBtn from "./PreviewDialogBtn";
 import PublishFormBtn from "./PublishFormBtn";
@@ -17,7 +17,7 @@ import Link from "next/link";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import Confetti from "react-confetti";
 
-function FormBuilder({ form }: { form: Form }) {
+function FormBuilder({ version }: { version: FormVersion & { form: Form } }) {
   const { setElements, setSelectedElement } = useDesigner();
   const [isReady, setIsReady] = useState(false);
 
@@ -38,12 +38,12 @@ function FormBuilder({ form }: { form: Form }) {
 
   useEffect(() => {
     if (isReady) return;
-    const elements = JSON.parse(form.content);
+    const elements = JSON.parse(version.content);
     setElements(elements);
     setSelectedElement(null);
     const readyTimeout = setTimeout(() => setIsReady(true), 500);
     return () => clearTimeout(readyTimeout);
-  }, [form, setElements, isReady, setSelectedElement]);
+  }, [version, setElements, isReady, setSelectedElement]);
 
   if (!isReady) {
     return (
@@ -53,9 +53,9 @@ function FormBuilder({ form }: { form: Form }) {
     );
   }
 
-  const shareUrl = `${window.location.origin}/submit/${form.shareURL}`;
+  const shareUrl = `${window.location.origin}/submit/${version.form.shareURL}`;
 
-  if (form.published) {
+  if (version.published) {
     return (
       <>
         <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={1000} />
@@ -64,9 +64,9 @@ function FormBuilder({ form }: { form: Form }) {
             <h1 className="text-center text-4xl font-bold text-primary border-b pb-2 mb-10">
               🎊🎊 Form Published 🎊🎊
             </h1>
-            <h2 className="text-2xl">Share this form</h2>
+            <h2 className="text-2xl">Share this version</h2>
             <h3 className="text-xl text-muted-foreground border-b pb-10">
-              Anyone with the link can view and submit the form
+              Anyone with the link can view and submit the version
             </h3>
             <div className="my-4 flex flex-col gap-2 items-center w-full border-b pb-4">
               <Input className="w-full" readOnly value={shareUrl} />
@@ -91,7 +91,7 @@ function FormBuilder({ form }: { form: Form }) {
                 </Link>
               </Button>
               <Button variant={"link"} asChild>
-                <Link href={`/forms/${form.id}`} className="gap-2">
+                <Link href={`/versions/${version.id}`} className="gap-2">
                   Form details
                   <BsArrowRight />
                 </Link>
@@ -109,14 +109,14 @@ function FormBuilder({ form }: { form: Form }) {
         <nav className="flex justify-between border-b-2 p-4 gap-3 items-center">
           <h2 className="truncate font-medium">
             <span className="text-muted-foreground mr-2">Form:</span>
-            {form.name}
+            <Link href={`/manage/${version.form.id}`}>{version.form.name}</Link>
           </h2>
           <div className="flex items-center gap-2">
             <PreviewDialogBtn />
-            {!form.published && (
+            {!version.published && (
               <>
-                <SaveFormBtn id={form.id} />
-                <PublishFormBtn id={form.id} />
+                <SaveFormBtn id={version.id} />
+                <PublishFormBtn id={version.id} />
               </>
             )}
           </div>

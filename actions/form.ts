@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { formSchema, formSchemaType } from "@/schemas/form";
 import { currentUser } from "@clerk/nextjs";
 
-class UserNotFoundErr extends Error {}
+class UserNotFoundErr extends Error { }
 
 export async function GetFormStats() {
   const user = await currentUser();
@@ -106,30 +106,34 @@ export async function GetForms() {
   });
 }
 
-export async function GetFormById(id: number) {
+export async function GetVersionByIdAndFormId(formId: number, versionId: string) {
   const user = await currentUser();
   if (!user) {
     throw new UserNotFoundErr();
   }
 
-  return await prisma.form.findUnique({
+  return await prisma.formVersion.findUnique({
     where: {
       userId: user.id,
-      id,
+      id: versionId,
+      formId,
     },
+    include: {
+      form: true,
+    }
   });
 }
 
-export async function UpdateFormContent(id: number, jsonContent: string) {
+export async function UpdateVersionContent(versionId: string, jsonContent: string) {
   const user = await currentUser();
   if (!user) {
     throw new UserNotFoundErr();
   }
 
-  return await prisma.form.update({
+  return await prisma.formVersion.update({
     where: {
       userId: user.id,
-      id,
+      id: versionId,
     },
     data: {
       content: jsonContent,
@@ -137,19 +141,19 @@ export async function UpdateFormContent(id: number, jsonContent: string) {
   });
 }
 
-export async function PublishForm(id: number) {
+export async function PublishVersion(versionId: string) {
   const user = await currentUser();
   if (!user) {
     throw new UserNotFoundErr();
   }
 
-  return await prisma.form.update({
+  return await prisma.formVersion.update({
     data: {
       published: true,
     },
     where: {
       userId: user.id,
-      id,
+      id: versionId,
     },
   });
 }
