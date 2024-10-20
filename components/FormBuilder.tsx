@@ -109,7 +109,7 @@ function FormBuilder({ version }: { version: FormVersion & { form: Form } }) {
         <nav className="flex justify-between border-b-2 p-4 gap-3 items-center">
           <h2 className="truncate font-medium">
             <span className="text-muted-foreground mr-2">Form:</span>
-            <Link href={`/manage/${version.form.id}`}>{version.form.name}</Link>
+            <Link className="hover:underline" href={`/dashboard/manage/${version.form.id}`}>{version.form.name}</Link>
           </h2>
           <div className="flex items-center gap-2">
             <PreviewDialogBtn />

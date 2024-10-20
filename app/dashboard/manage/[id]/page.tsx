@@ -1,5 +1,5 @@
 import React from "react";
-import { getFormVersionByFormId, GetFormById } from "./actions";
+import { GetFormVersionByFormId, GetFormById } from "@/actions/form";
 import VisitBtn from "@/components/VisitBtn";
 import FormLinkShare from "@/components/FormLinkShare";
 import {
@@ -24,7 +24,7 @@ async function ManagePage({
 }) {
   const { id } = params;
   const form = await GetFormById(Number(id));
-  const versions = await getFormVersionByFormId(Number(id));
+  const versions = await GetFormVersionByFormId(Number(id));
   if (!form) {
     throw new Error("form not found");
   }
@@ -86,12 +86,12 @@ async function VersionsTable({
                   {version.published ? "Published" : "Not Published"}
                 </TableCell>
                 <TableCell>
-                  <Link className="mr-2" href={`/manage/${id}/build/${version.id}`}>
-                    <Button variant="outline" size="sm">
+                  <Link className="mr-2" href={`/dashboard/manage/${id}/build/${version.id}`}>
+                    <Button size="sm">
                       Edit
                     </Button>
                   </Link>
-                  <Link href={`/manage/${id}/preview/${version.id}`}>
+                  <Link href={`/dashboard/manage/${id}/preview/${version.id}`}>
                     <Button variant="outline" size="sm">
                       Preview
                     </Button>

@@ -193,7 +193,7 @@ function FormCard({ form }: { form: Form }) {
             variant={"secondary"}
             className="w-full mt-2 text-md gap-4"
           >
-            <Link href={`/manage/${form.id}`}>
+            <Link href={`/dashboard/manage/${form.id}`}>
               Edit form <FaEdit />
             </Link>
           </Button>
